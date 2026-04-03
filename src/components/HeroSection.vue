@@ -20,7 +20,7 @@
             :style="{ background: 'radial-gradient(ellipse at 70% 50%, transparent 30%, hsl(230,25%,7%,0.7) 70%)' }"
         />
   
-            <div class="container mx-auto px-6 relative z-10 py-32 md:py-0">
+            <div class="container mx-auto px-6 relative z-10 py-24 md:py-0">
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
         
                 <!-- Left: Text -->
@@ -42,10 +42,9 @@
                     </div>
         
                     <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4">
-                        Hi, I'm
-                        <span class="gradient-text"> Joga Singh</span>
+                        Hi, <br />I'm
+                        <span class="gradient-text"> Joga Singh Dayal</span>
                         <br />
-                        <span class="gradient-text">Dayal</span>
                     </h1>
         
                     <p class="text-xl md:text-2xl font-light mb-2" style="color: hsl(var(--muted-foreground))">
