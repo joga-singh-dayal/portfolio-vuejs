@@ -116,7 +116,7 @@
                         </div>
         
                         <!-- Floating badges -->
-                        <div class="absolute -top-2 -right-2 glass-card px-3 py-1.5 rounded-full text-xs font-medium float-badge">
+                        <div class="absolute top-6 -right-2 glass-card px-3 py-1.5 rounded-full text-xs font-medium float-badge">
                             ⚛️ React
                         </div>
                         <div class="absolute bottom-8 -left-4 glass-card px-3 py-1.5 rounded-full text-xs font-medium float-badge-slow">
