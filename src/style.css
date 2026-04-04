@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
     :root {
         --background: 230 25% 7%;
@@ -35,9 +34,22 @@
 
         --radius: 0.75rem;
 
-        --gradient-primary: linear-gradient(135deg, hsl(250, 85%, 65%), hsl(210, 100%, 60%));
-        --gradient-hero: linear-gradient(160deg, hsl(230, 25%, 7%) 0%, hsl(250, 30%, 12%) 50%, hsl(230, 25%, 7%) 100%);
-        --gradient-card: linear-gradient(135deg, hsl(230, 20%, 13%) 0%, hsl(230, 20%, 9%) 100%);
+        --gradient-primary: linear-gradient(
+            135deg,
+            hsl(250, 85%, 65%),
+            hsl(210, 100%, 60%)
+        );
+        --gradient-hero: linear-gradient(
+            160deg,
+            hsl(230, 25%, 7%) 0%,
+            hsl(250, 30%, 12%) 50%,
+            hsl(230, 25%, 7%) 100%
+        );
+        --gradient-card: linear-gradient(
+            135deg,
+            hsl(230, 20%, 13%) 0%,
+            hsl(230, 20%, 9%) 100%
+        );
 
         --glass-bg: hsl(230, 20%, 11%, 0.6);
         --glass-border: hsl(230, 15%, 25%, 0.4);
@@ -48,7 +60,7 @@
 
 @layer base {
     * {
-      border-color: hsl(var(--border));
+        border-color: hsl(var(--border));
     }
 
     body {
@@ -58,9 +70,9 @@
         color: hsl(var(--foreground));
     }
 
-  html {
-    scroll-behavior: smooth;
-  }
+    html {
+        scroll-behavior: smooth;
+    }
 }
 
 @layer components {
@@ -87,7 +99,9 @@
         border-radius: inherit;
         padding: 1px;
         background: var(--gradient-primary);
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask:
+            linear-gradient(#fff 0 0) content-box,
+            linear-gradient(#fff 0 0);
         -webkit-mask-composite: xor;
         mask-composite: exclude;
         pointer-events: none;
