@@ -119,13 +119,13 @@
                         <div class="absolute top-6 -right-2 glass-card px-3 py-1.5 rounded-full text-xs font-medium float-badge">
                             ⚛️ React
                         </div>
-                        <div class="absolute bottom-8 -left-4 glass-card px-3 py-1.5 rounded-full text-xs font-medium float-badge-slow">
+                        <div class="absolute bottom-8 -left-14 sm:-left-10 glass-card px-3 py-1.5 rounded-full text-xs font-medium float-badge-slow">
                             🔷 TypeScript
                         </div>
                         <div class="absolute bottom-0 right-0 glass-card px-3 py-1.5 rounded-full text-xs font-medium float-badge-medium">
                             ▲ Next.js
                         </div>
-                        <div class="absolute bottom-48 -left-8 glass-card px-3 py-1.5 rounded-full text-xs font-medium float-badge flex items-center gap-1">
+                        <div class="absolute bottom-32 sm:bottom-48 -left-12 glass-card px-3 py-1.5 rounded-full text-xs font-medium float-badge flex items-center gap-1">
                             <svg width="14" height="14" viewBox="0 0 261.76 226.69" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M161.096 0L130.88 51.5 100.664 0H0l130.88 226.69L261.76 0z" fill="#41b883"/>
                                 <path d="M161.096 0L130.88 51.5 100.664 0H52.344l78.536 136.01L209.416 0z" fill="#34495e"/>
