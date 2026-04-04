@@ -25,6 +25,7 @@ export default [
         },
         rules: {
             'vue/multi-word-component-names': 'off',
+            'vue/no-v-html': 'off',
         },
     },
     eslintConfigPrettier, // 2. Add this at the VERY end
