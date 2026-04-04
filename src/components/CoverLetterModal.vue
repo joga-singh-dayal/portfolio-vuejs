@@ -19,7 +19,7 @@
                                     class="font-heading text-xl font-bold" 
                                     style="color: hsl(var(--foreground))"
                                 >
-                                    {{ isGenerated ? 'Cover Letter + CV' : 'Generate Cover Letter' }}
+                                    {{ 'Cover Letter + CV' }}
                                 </h2>
                                 <p class="text-xs mt-1" style="color: hsl(var(--muted-foreground))">
                                     {{ isGenerated ? 'Download as one PDF (Cover Letter + CV)' : 'Personalized letter + CV — all in one PDF' }}
