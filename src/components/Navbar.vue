@@ -16,15 +16,14 @@
                 >
                     {{ link.label }}
                 </button>
-                
-                <a  href="/Lebenslauf_Joga_Singh_Dayal.pdf"
-                    download
+                <button
+                    @click="showModal = true"
                     class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-white transition-all duration-300 hover:scale-105"
                     :style="{ backgroundImage: 'var(--gradient-primary)', boxShadow: 'var(--shadow-glow)' }"
                 >
                     <Download :size="14" />
                     Download CV
-                </a>
+                </button>
             </div>
     
             <!-- Mobile toggle -->
@@ -49,6 +48,7 @@
             </div>
             </div>
         </Transition>
+        <CoverLetterModal :isOpen="showModal" @close="showModal = false" />
     </nav>
 </template>
   
@@ -56,30 +56,32 @@
     import { ref, onMounted, onUnmounted } from 'vue'
     import { RouterLink, useRoute } from 'vue-router'
     import { Menu, X, Download } from 'lucide-vue-next'
-    
+    import CoverLetterModal from './CoverLetterModal.vue'
+
     const scrolled = ref(false)
     const menuOpen = ref(false)
+    const showModal = ref(false)
     const route = useRoute()
-    
+
     const navLinks = [
         { label: 'Home', href: '/#hero' },
         { label: 'Skills', href: '/#skills' },
         { label: 'About', href: '/#about' },
         { label: 'Contact', href: '/#contact' },
     ]
-    
+
     const onScroll = () => {
         scrolled.value = window.scrollY > 40
     }
-    
+
     onMounted(() => window.addEventListener('scroll', onScroll))
     onUnmounted(() => window.removeEventListener('scroll', onScroll))
-    
+
     const handleNav = (href: string) => {
         menuOpen.value = false
         if (route.path !== '/' && href.startsWith('/#')) {
-        window.location.href = href
-        return
+            window.location.href = href
+            return
         }
         const id = href.replace('/#', '')
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })

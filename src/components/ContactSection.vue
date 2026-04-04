@@ -73,31 +73,24 @@
                 </div>
 
                 <!-- Download CV -->
-                <div
-                class="mt-8 pt-6 border-t text-center"
-                style="border-color: hsl(var(--border))"
-                >
-                <a
-                    href="/Lebenslauf_Joga_Singh_Dayal.pdf"
-                    download
-                    class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                    :style="{
-                    backgroundImage: 'var(--gradient-primary)',
-                    boxShadow: 'var(--shadow-glow)',
-                    }"
-                >
-                    <Download :size="16" />
-                    Download CV
-                </a>
-                <div
-                    class="mt-8 pt-6 border-t text-center"
-                    style="border-color: hsl(var(--border))"
-                >
-                    <p class="text-sm" style="color: hsl(var(--muted-foreground))">
-                    Open to exciting frontend opportunities. Let's build something great
-                    together.
-                    </p>
-                </div>
+                <div class="mt-8 pt-6 border-t text-center" style="border-color: hsl(var(--border))">
+                    <button
+                        @click="$emit('openModal')"
+                        class="inline-flex justify-center items-center gap-2 px-6 py-3 rounded-full text-sm w-1/3 font-medium text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                        :style="{ backgroundImage: 'var(--gradient-primary)', boxShadow: 'var(--shadow-glow)' }"
+                    >
+                        <Download :size="16" />
+                        Download CV
+                    </button>
+                    <div
+                        class="mt-8 pt-6 border-t text-center"
+                        style="border-color: hsl(var(--border))"
+                    >
+                       <p class="text-sm" style="color: hsl(var(--muted-foreground))">
+                            Open to exciting frontend opportunities. Let's build something great
+                            together.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -107,6 +100,7 @@
 <script setup lang="ts">
     import { Mail, Phone, Github, Linkedin, Download } from "lucide-vue-next";
     import { aboutData } from "../data/portfolio";
+    defineEmits(['openModal'])
 
     const { contact } = aboutData;
 </script>
