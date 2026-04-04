@@ -174,7 +174,7 @@
                                 ← Switch Language
                             </button>
                         </div>
-                        <div class="text-sm text-center mt-4">
+                        <div v-if="!isGenerated" class="text-sm text-center mt-4">
                             <span class="">No data will be saved to our Database</span>  
                         </div>
                     </div>
