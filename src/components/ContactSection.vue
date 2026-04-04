@@ -76,7 +76,7 @@
                 <div class="mt-8 pt-6 border-t text-center" style="border-color: hsl(var(--border))">
                     <button
                         @click="$emit('openModal')"
-                        class="inline-flex justify-center items-center gap-2 px-6 py-3 rounded-full text-sm w-1/3 font-medium text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                        class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
                         :style="{ backgroundImage: 'var(--gradient-primary)', boxShadow: 'var(--shadow-glow)' }"
                     >
                         <Download :size="16" />
