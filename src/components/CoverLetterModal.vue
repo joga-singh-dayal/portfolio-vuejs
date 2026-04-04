@@ -88,7 +88,7 @@
 
                                 <div>
                                     <label class="text-xs font-medium uppercase tracking-wider mb-1.5 block" style="color: hsl(var(--primary))">
-                                        Technologies they use *
+                                        Technologies - looking for *
                                     </label>
                                     <input 
                                         v-model="form.technologies" 
