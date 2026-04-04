@@ -228,7 +228,7 @@
 
 <script setup lang="ts">
 import { ArrowDown, MapPin } from 'lucide-vue-next'
-import profileImg from '../assets/profile.png'
+import profileImg from '../assets/profile.webp'
 
 const stats = [
     { value: '6+', label: 'Years Exp.' },
