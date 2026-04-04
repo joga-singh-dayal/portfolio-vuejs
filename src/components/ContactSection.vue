@@ -35,7 +35,7 @@
                 }"
                 class="glass-card rounded-2xl p-8 md:p-10"
             >
-                <div class="grid sm:grid-cols-2 gap-6 ml-20">
+                <div class="grid sm:grid-cols-2 gap-6 ml-16 md:ml-20">
                     <a
                         :href="`mailto:${contact.email}`"
                         class="flex items-center gap-3 transition-colors hover-link"
