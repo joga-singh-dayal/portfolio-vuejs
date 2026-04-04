@@ -28,7 +28,7 @@
     
                 <!-- Right: Experience -->
                 <div v-motion :initial="{ opacity: 0, x: 20 }" :visibleOnce="{ opacity: 1, x: 0, transition: { duration: 500 } }" class="space-y-6" >
-                    <div v-for="exp in aboutData.experience" :key="exp.period" class="glass-card rounded-xl p-5 border-2 skill-card-hover" style="border-color: hsl(var(--primary))" >
+                    <div v-for="exp in aboutData.experience" :key="exp.period" class="glass-card rounded-xl p-5 border-l-2 skill-card-hover" style="border-left-color: hsl(var(--primary))" >
                         <div class="flex items-center gap-2 mb-1">
                             <Briefcase :size="14" style="color: hsl(var(--primary))" />
                             <span class="text-xs" style="color: hsl(var(--muted-foreground))">{{ exp.period }}</span>
