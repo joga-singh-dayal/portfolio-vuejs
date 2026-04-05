@@ -113,6 +113,8 @@
 </template>
 
 <script setup lang="ts">
-import { CheckCircle, Briefcase } from 'lucide-vue-next'
-import { aboutData } from '../data/portfolio'
+    import { CheckCircle, Briefcase } from 'lucide-vue-next'
+    import { usePortfolio } from '../composables/usePortfolio'
+
+    const { aboutData } = usePortfolio()
 </script>

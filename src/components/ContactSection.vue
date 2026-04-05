@@ -126,11 +126,14 @@
 </template>
 
 <script setup lang="ts">
+    import { computed } from 'vue'
     import { Mail, Phone, Github, Linkedin, Download } from 'lucide-vue-next'
-    import { aboutData } from '../data/portfolio'
+    import { usePortfolio } from '../composables/usePortfolio'
+
     defineEmits(['openModal'])
 
-    const { contact } = aboutData
+    const { aboutData } = usePortfolio()
+    const contact = computed(() => aboutData.value.contact)
 </script>
 
 <style scoped>

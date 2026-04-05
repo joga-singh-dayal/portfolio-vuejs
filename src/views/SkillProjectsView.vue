@@ -188,14 +188,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useRoute, RouterLink } from 'vue-router'
-import { ArrowLeft, Github, ExternalLink } from 'lucide-vue-next'
-import { skills } from '../data/portfolio'
-import Navbar from '../components/Navbar.vue'
+    import { computed } from 'vue'
+    import { useRoute, RouterLink } from 'vue-router'
+    import { ArrowLeft, Github, ExternalLink } from 'lucide-vue-next'
+    import { usePortfolio } from '../composables/usePortfolio'
+    import Navbar from '../components/Navbar.vue'
 
-const route = useRoute()
-const skill = computed(() => skills.find((s) => s.id === route.params.skillId))
+    const route = useRoute()
+    const { skills } = usePortfolio()
+    const skill = computed(() => skills.value.find((s) => s.id === route.params.skillId))
 </script>
 
 <style scoped>

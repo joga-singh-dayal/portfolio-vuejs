@@ -25,9 +25,17 @@
                 </h2>
             </div>
 
-            <div
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
-            >
+            <!-- Loading state -->
+            <div v-if="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                <div
+                    v-for="i in localSkills.length"
+                    :key="i"
+                    class="glass-card rounded-xl p-6 animate-pulse"
+                    style="height: 140px"
+                />
+            </div>
+            <!-- Skills grid -->
+            <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                 <SkillCard
                     v-for="(skill, i) in skills"
                     :key="skill.id"
@@ -40,6 +48,9 @@
 </template>
 
 <script setup lang="ts">
-import { skills } from '../data/portfolio'
-import SkillCard from './SkillCard.vue'
+    import { usePortfolio } from '../composables/usePortfolio'
+    import { skills as localSkills } from '../data/portfolio'
+    import SkillCard from './SkillCard.vue'
+
+    const { skills, isLoading } = usePortfolio()
 </script>
