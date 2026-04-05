@@ -228,8 +228,9 @@
                                     background: hsl(var(--secondary));
                                     color: hsl(var(--foreground));
                                 "
-                                v-html="generatedLetter"
-                            />
+                            >
+                                <LetterPreview :letter="letterData" />
+                            </div>
 
                             <!-- Download button -->
                             <button
@@ -282,9 +283,23 @@
 import { ref, reactive, watch } from 'vue'
 import { X, Sparkles, Download, Loader } from 'lucide-vue-next'
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'
+import LetterPreview from './LetterPreview.vue'
+import type { LetterData } from './LetterPreview.vue'
+import fontkit from '@pdf-lib/fontkit'
 
 const props = defineProps<{ isOpen: boolean }>()
 defineEmits(['close'])
+
+const letterData = ref<LetterData>({
+    companyName: '',
+    department: '',
+    companyAddress: '',
+    date: '',
+    subject: '',
+    salutation: '',
+    paragraphs: [],
+    signoff: '',
+})
 
 watch(
     () => props.isOpen,
@@ -361,7 +376,9 @@ const getTechSentence = () => {
             sentence += `Meine PHP- und Laravel-Kenntnisse bringe ich als zusätzlichen Pluspunkt mit. `
         }
         if (otherTechs.length > 0) {
-            sentence += `Ich freue mich darauf, mich auch in ${otherTechs.join(', ')} schnell einzuarbeiten und neue Technologien als Chance zur Weiterentwicklung zu sehen. `
+            sentence += `Ich freue mich darauf, mich auch in ${otherTechs.join(
+                ', ',
+            )} schnell einzuarbeiten und neue Technologien als Chance zur Weiterentwicklung zu sehen. `
         }
         return sentence
     } else {
@@ -373,7 +390,9 @@ const getTechSentence = () => {
             sentence += `My PHP and Laravel experience is an additional strength I bring to the role. `
         }
         if (otherTechs.length > 0) {
-            sentence += `I look forward to quickly getting up to speed with ${otherTechs.join(', ')} and see new technologies as an opportunity for growth. `
+            sentence += `I look forward to quickly getting up to speed with ${otherTechs.join(
+                ', ',
+            )} and see new technologies as an opportunity for growth. `
         }
         return sentence
     }
@@ -391,87 +410,47 @@ const getReferralSentence = () => {
 const generate = () => {
     if (!validate()) return
 
-    const today = new Date().toLocaleDateString(
-        form.language === 'german' ? 'de-DE' : 'en-GB',
-        {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-        },
-    )
+    const today = new Date().toLocaleDateString('de-DE', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+    })
 
     const techSentence = getTechSentence()
     const referralSentence = getReferralSentence()
+    const isGerman = form.language === 'german'
 
-    if (form.language === 'german') {
-        generatedLetter.value = `
-                <div style="margin-bottom: 24px; line-height: 1.6;">
-                    <strong>${form.companyName}</strong><br/>
-                    Personalabteilung<br/>
-                    ${form.companyAddress}
-                </div>
-                <div style="margin-bottom: 24px; text-align: right;">Radebeul, ${today}</div>
-                <div style="margin-bottom: 20px;"><strong>Bewerbung als ${form.jobTitle}</strong></div>
-                <p style="margin-bottom: 16px;">Sehr geehrte/r ${form.contactPerson},</p>
-                <p style="margin-bottom: 16px;">
-                    vielen Dank, dass Sie sich die Zeit genommen haben, mein Portfolio zu besuchen und sich für mein Profil zu interessieren.
-                    ${referralSentence}Ich freue mich sehr über die Möglichkeit, mich als ${form.jobTitle} bei der ${form.companyName} vorzustellen.
-                </p>
-                <p style="margin-bottom: 16px;">
-                    Ich bringe mehr als 6 Jahre Erfahrung in der IT mit – als Web-Entwickler, Software Tester und seit 2023 als Frontend-Entwickler.
-                    TypeScript, JavaScript, HTML5, CSS3, Git und die Arbeit in agilen Teams gehören zu meinem täglichen Arbeitsalltag.
-                    Meine bevorzugte JavaScript-Bibliothek ist ReactJS, mit dem ich aktuell an FreeDesign® arbeite – einem hochskalierbaren Online-Design-Editor
-                    mit über 1 Million Nutzern in 22 europäischen Ländern.
-                </p>
-                <p style="margin-bottom: 16px;">${techSentence}</p>
-                <p style="margin-bottom: 16px;">
-                    Die Möglichkeit, bei ${form.companyName} mitzuwirken, reizt mich sehr. Ich bin überzeugt, dass ich gut ins Team passe
-                    und schnell einen wertvollen Beitrag leisten kann. Ich freue mich sehr auf ein persönliches Gespräch.
-                </p>
-                <p style="margin-bottom: 24px;">Mit freundlichen Grüßen</p>
-                <p>
-                    <strong>Joga Singh Dayal</strong><br/>
-                    +49 176 5781 8593<br/>
-                    joga-singh@web.de<br/>
-                    Emil-Schüller-Str. 6D,<br/>
-                    01445 Radebeul
-                </p>
-            `
-    } else {
-        generatedLetter.value = `
-                <div style="margin-bottom: 24px; line-height: 1.6;">
-                    <strong>${form.companyName}</strong><br/>
-                    HR Department<br/>
-                    ${form.companyAddress}
-                </div>
-                <div style="margin-bottom: 24px; text-align: right;">Radebeul, ${today}</div>
-                <div style="margin-bottom: 20px;"><strong>Application for ${form.jobTitle}</strong></div>
-                <p style="margin-bottom: 16px;">Dear ${form.contactPerson},</p>
-                <p style="margin-bottom: 16px;">
-                    Thank you very much for taking the time to visit my portfolio and showing interest in my profile.
-                    ${referralSentence}I am truly excited about the opportunity to introduce myself as a candidate for the position of ${form.jobTitle} at ${form.companyName}.
-                </p>
-                <p style="margin-bottom: 16px;">
-                    I bring over 6 years of experience in IT — as a web developer, software tester and since 2023 as a frontend developer.
-                    TypeScript, JavaScript, HTML5, CSS3, Git and agile teamwork are part of my daily workflow. My main JavaScript library is ReactJS,
-                    which I currently use to develop FreeDesign® — a highly scalable online design editor with over 1 million users across
-                    22 European countries.
-                </p>
-                <p style="margin-bottom: 16px;">${techSentence}</p>
-                <p style="margin-bottom: 16px;">
-                    I am genuinely excited about the opportunity to contribute to ${form.companyName}. I am confident that I would be a
-                    great fit for the team and can make a valuable contribution quickly. I very much look forward to a personal conversation.
-                </p>
-                <p style="margin-bottom: 24px;">Kind regards,</p>
-                <p>
-                    <strong>Joga Singh Dayal</strong><br/>
-                    +49 176 5781 8593<br/>
-                    joga-singh@web.de<br/>
-                    Emil-Schüller-Str. 6D,<br/>
-                    01445 Radebeul
-                </p>
-            `
+    const p1 = isGerman
+        ? `vielen Dank, dass Sie sich die Zeit genommen haben, mein Portfolio zu besuchen und sich für mein Profil zu interessieren. ${referralSentence}Ich freue mich sehr über die Möglichkeit, mich als ${form.jobTitle} bei der ${form.companyName} vorzustellen.`
+        : `Thank you very much for taking the time to visit my portfolio and showing interest in my profile. ${referralSentence}I am truly excited about the opportunity to introduce myself as a candidate for the position of ${form.jobTitle} at ${form.companyName}.`
+
+    const p2 = isGerman
+        ? `Ich bringe mehr als 6 Jahre Erfahrung in der IT mit – als Web-Entwickler, Software Tester und seit 2023 als Frontend-Entwickler. TypeScript, JavaScript, HTML5, CSS3, Git und die Arbeit in agilen Teams gehören zu meinem täglichen Arbeitsalltag. Meine bevorzugte JavaScript-Bibliothek ist ReactJS, mit dem ich aktuell an FreeDesign® arbeite – einem hochskalierbaren Online-Design-Editor mit über 1 Million Nutzern in 22 europäischen Ländern.`
+        : `I bring over 6 years of experience in IT — as a web developer, software tester and since 2023 as a frontend developer. TypeScript, JavaScript, HTML5, CSS3, Git and agile teamwork are part of my daily workflow. My main JavaScript library is ReactJS, which I currently use to develop FreeDesign® — a highly scalable online design editor with over 1 million users across 22 European countries.`
+
+    const p4 = isGerman
+        ? `Die Möglichkeit, bei ${form.companyName} mitzuwirken, reizt mich sehr. Ich bin überzeugt, dass ich gut ins Team passe und schnell einen wertvollen Beitrag leisten kann. Ich freue mich sehr auf ein persönliches Gespräch.`
+        : `I am genuinely excited about the opportunity to contribute to ${form.companyName}. I am confident that I would be a great fit for the team and can make a valuable contribution quickly. I very much look forward to a personal conversation.`
+
+    const paragraphs = [p1, p2]
+    if (techSentence.trim()) paragraphs.push(techSentence.trim())
+    paragraphs.push(p4)
+
+    letterData.value = {
+        companyName: form.companyName,
+        department: isGerman ? 'Personalabteilung' : 'HR Department',
+        companyAddress: form.companyAddress,
+        date: today,
+        subject: isGerman
+            ? `Bewerbung als ${form.jobTitle}`
+            : `Application for ${form.jobTitle}`,
+        salutation: isGerman
+            ? `Sehr geehrte/r ${form.contactPerson},`
+            : `Respected ${form.contactPerson},`,
+        paragraphs,
+        signoff: isGerman ? 'Mit freundlichen Grüßen' : 'Kind regards,',
     }
+
     isGenerated.value = true
 }
 
@@ -524,14 +503,11 @@ const downloadMergedPdf = async () => {
     isDownloading.value = true
 
     try {
-        const today = new Date().toLocaleDateString(
-            form.language === 'german' ? 'de-DE' : 'en-GB',
-            {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-            },
-        )
+        const today = new Date().toLocaleDateString('de-DE', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        })
 
         const isGerman = form.language === 'german'
         const techSentence = getTechSentence()
@@ -539,8 +515,15 @@ const downloadMergedPdf = async () => {
 
         // Create new PDF
         const pdfDoc = await PDFDocument.create()
+        pdfDoc.registerFontkit(fontkit)
         const font = await pdfDoc.embedFont(StandardFonts.Helvetica)
         const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold)
+
+        // Embed signature font
+        const signatureFontBytes = await fetch(
+            '/fonts/GreatVibes-Regular.ttf',
+        ).then((res) => res.arrayBuffer())
+        const signatureFont = await pdfDoc.embedFont(signatureFontBytes)
 
         const black = rgb(0.1, 0.1, 0.1)
         const gray = rgb(0.4, 0.4, 0.4)
@@ -604,7 +587,7 @@ const downloadMergedPdf = async () => {
         // Salutation
         const salutation = isGerman
             ? `Sehr geehrte/r ${form.contactPerson},`
-            : `Dear ${form.contactPerson},`
+            : `Respected ${form.contactPerson},`
         page1.drawText(salutation, {
             x: margin,
             y,
@@ -690,17 +673,17 @@ const downloadMergedPdf = async () => {
             font,
             color: black,
         })
-        y -= 40
+        y -= 20
 
         // Signature
         page1.drawText('Joga Singh Dayal', {
             x: margin,
             y,
-            size: 11,
-            font: fontBold,
-            color: black,
+            size: 14,
+            font: signatureFont,
+            color: rgb(0.1, 0.2, 0.6),
         })
-        y -= 18
+        y -= 25
         page1.drawText('+49 176 5781 8593', {
             x: margin,
             y,
@@ -717,7 +700,7 @@ const downloadMergedPdf = async () => {
             color: primary,
         })
         y -= 16
-        page1.drawText('Emil-Schüller-Str. 6D, 01445 Radebeul', {
+        page1.drawText('01445 Radebeul', {
             x: margin,
             y,
             size: 10,
@@ -725,13 +708,60 @@ const downloadMergedPdf = async () => {
             color: gray,
         })
 
-        // --- PAGE 2 & 3: Existing CV PDF ---
+        // --- PAGE 2 & 3: Existing CV PDF with dynamic date ---
         const cvResponse = await fetch('/Lebenslauf_Joga_Singh_Dayal.pdf')
         const cvBytes = await cvResponse.arrayBuffer()
         const cvPdf = await PDFDocument.load(cvBytes)
         const cvPages = await pdfDoc.copyPages(cvPdf, cvPdf.getPageIndices())
+
+        // Add CV pages
         cvPages.forEach((p) => pdfDoc.addPage(p))
 
+        // Add dynamic date to last page of CV (page 3)
+        const lastPage = pdfDoc.getPage(pdfDoc.getPageCount() - 1)
+
+        const cvDate = new Date().toLocaleDateString('de-DE', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        })
+
+        // White rectangle to cover any leftover space
+        lastPage.drawRectangle({
+            x: 65,
+            y: 210,
+            width: 200,
+            height: 20,
+            color: rgb(1, 1, 1),
+        })
+
+        // Draw dynamic date
+        lastPage.drawText('Radebeul, ', {
+            x: 65,
+            y: 215,
+            size: 10,
+            font: fontBold,
+            color: black,
+        })
+
+        // Date in regular font right after "Radebeul, "
+        const radebuelWidth = fontBold.widthOfTextAtSize('Radebeul, ', 10)
+        lastPage.drawText(cvDate, {
+            x: 65 + radebuelWidth,
+            y: 215,
+            size: 10,
+            font,
+            color: black,
+        })
+
+        // Signature block below
+        lastPage.drawText('Joga Singh Dayal', {
+            x: 65,
+            y: 195,
+            size: 14,
+            font: signatureFont,
+            color: rgb(0.1, 0.2, 0.6),
+        })
         // Save and download
         const pdfBytes = await pdfDoc.save()
         const blob = new Blob([pdfBytes.buffer as ArrayBuffer], {
@@ -740,7 +770,10 @@ const downloadMergedPdf = async () => {
         const url = URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
-        a.download = `Bewerbung_Joga_Singh_Dayal_${form.companyName.replace(/\s+/g, '_')}.pdf`
+        a.download = `Bewerbung_Joga_Singh_Dayal_${form.companyName.replace(
+            /\s+/g,
+            '_',
+        )}.pdf`
         a.click()
         URL.revokeObjectURL(url)
     } catch (e) {
@@ -760,24 +793,24 @@ const reset = () => {
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.3s ease;
-}
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity 0.3s ease;
+    }
 
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
-}
+    .fade-enter-from,
+    .fade-leave-to {
+        opacity: 0;
+    }
 
-.slide-up-enter-active,
-.slide-up-leave-active {
-    transition: all 0.3s ease;
-}
+    .slide-up-enter-active,
+    .slide-up-leave-active {
+        transition: all 0.3s ease;
+    }
 
-.slide-up-enter-from,
-.slide-up-leave-to {
-    opacity: 0;
-    transform: translateY(20px);
-}
+    .slide-up-enter-from,
+    .slide-up-leave-to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
 </style>

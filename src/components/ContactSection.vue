@@ -126,15 +126,15 @@
 </template>
 
 <script setup lang="ts">
-import { Mail, Phone, Github, Linkedin, Download } from 'lucide-vue-next'
-import { aboutData } from '../data/portfolio'
-defineEmits(['openModal'])
+    import { Mail, Phone, Github, Linkedin, Download } from 'lucide-vue-next'
+    import { aboutData } from '../data/portfolio'
+    defineEmits(['openModal'])
 
-const { contact } = aboutData
+    const { contact } = aboutData
 </script>
 
 <style scoped>
-.hover-link:hover span {
-    color: hsl(var(--foreground));
-}
+    .hover-link:hover span {
+        color: hsl(var(--foreground));
+    }
 </style>

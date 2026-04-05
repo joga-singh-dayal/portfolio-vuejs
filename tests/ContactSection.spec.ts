@@ -5,11 +5,11 @@ import ContactSection from "../src/components/ContactSection.vue";
 describe("ContactSection.vue", () => {
     it('emits "openModal" event when Download CV button is clicked', async () => {
         const wrapper = mount(ContactSection, {
-        global: {
-            stubs: {
-            "v-motion": true,
+            global: {
+                stubs: {
+                "v-motion": true,
+                },
             },
-        },
         });
 
         const button = wrapper.find("button");
