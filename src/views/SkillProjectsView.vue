@@ -173,13 +173,6 @@
                         >
                             <ExternalLink :size="16" /> Live Demo
                         </a>
-                        <!-- Need to add later a download button for documentation for each project
-                        <button
-                            class="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-lg transition-colors"
-                            style="background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground))"
-                        >
-                            <Download :size="16" /> Download Docs
-                        </button> -->
                     </div>
                 </article>
             </div>

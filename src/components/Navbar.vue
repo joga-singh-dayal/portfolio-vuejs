@@ -70,39 +70,39 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
-import { Menu, X, Download } from 'lucide-vue-next'
-import CoverLetterModal from './CoverLetterModal.vue'
+    import { ref, onMounted, onUnmounted } from 'vue'
+    import { RouterLink, useRoute } from 'vue-router'
+    import { Menu, X, Download } from 'lucide-vue-next'
+    import CoverLetterModal from './CoverLetterModal.vue'
 
-const scrolled = ref(false)
-const menuOpen = ref(false)
-const showModal = ref(false)
-const route = useRoute()
+    const scrolled = ref(false)
+    const menuOpen = ref(false)
+    const showModal = ref(false)
+    const route = useRoute()
 
-const navLinks = [
-    { label: 'Home', href: '/#hero' },
-    { label: 'Skills', href: '/#skills' },
-    { label: 'About', href: '/#about' },
-    { label: 'Contact', href: '/#contact' },
-]
+    const navLinks = [
+        { label: 'Home', href: '/#hero' },
+        { label: 'Skills', href: '/#skills' },
+        { label: 'About', href: '/#about' },
+        { label: 'Contact', href: '/#contact' },
+    ]
 
-const onScroll = () => {
-    scrolled.value = window.scrollY > 40
-}
-
-onMounted(() => window.addEventListener('scroll', onScroll))
-onUnmounted(() => window.removeEventListener('scroll', onScroll))
-
-const handleNav = (href: string) => {
-    menuOpen.value = false
-    if (route.path !== '/' && href.startsWith('/#')) {
-        window.location.href = href
-        return
+    const onScroll = () => {
+        scrolled.value = window.scrollY > 40
     }
-    const id = href.replace('/#', '')
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-}
+
+    onMounted(() => window.addEventListener('scroll', onScroll))
+    onUnmounted(() => window.removeEventListener('scroll', onScroll))
+
+    const handleNav = (href: string) => {
+        menuOpen.value = false
+        if (route.path !== '/' && href.startsWith('/#')) {
+            window.location.href = href
+            return
+        }
+        const id = href.replace('/#', '')
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    }
 </script>
 
 <style scoped>

@@ -29,14 +29,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
-import Navbar from '../components/Navbar.vue'
-import HeroSection from '../components/HeroSection.vue'
-import SkillsSection from '../components/SkillsSection.vue'
-import AboutSection from '../components/AboutSection.vue'
-import ContactSection from '../components/ContactSection.vue'
-import CoverLetterModal from '../components/CoverLetterModal.vue'
+    import { ref } from 'vue'
+    import { RouterLink } from 'vue-router'
+    import Navbar from '../components/Navbar.vue'
+    import HeroSection from '../components/HeroSection.vue'
+    import SkillsSection from '../components/SkillsSection.vue'
+    import AboutSection from '../components/AboutSection.vue'
+    import ContactSection from '../components/ContactSection.vue'
+    import CoverLetterModal from '../components/CoverLetterModal.vue'
 
-const showModal = ref(false)
+    const showModal = ref(false)
 </script>
