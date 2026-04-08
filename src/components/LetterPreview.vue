@@ -33,9 +33,6 @@
         <!-- Signature -->
         <div style="line-height: 1.8">
             <p style="font-weight: 600">Joga Singh Dayal</p>
-            <p style="color: hsl(var(--muted-foreground))">+49 176 5781 8593</p>
-            <p style="color: hsl(var(--primary))">joga-singh@web.de</p>
-            <p style="color: hsl(var(--muted-foreground))">01445 Radebeul</p>
         </div>
     </div>
 </template>

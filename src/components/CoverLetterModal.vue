@@ -286,6 +286,7 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'
 import LetterPreview from './LetterPreview.vue'
 import type { LetterData } from './LetterPreview.vue'
 import fontkit from '@pdf-lib/fontkit'
+import { useDownloadCounter } from '../composables/useDownloadCounter'
 
 const props = defineProps<{ isOpen: boolean }>()
 defineEmits(['close'])
@@ -318,6 +319,8 @@ watch(
         }
     },
 )
+
+const { incrementCount } = useDownloadCounter()
 
 const isGenerated = ref(false)
 const isDownloading = ref(false)
@@ -428,13 +431,21 @@ const generate = () => {
         ? `Ich bringe mehr als 6 Jahre Erfahrung in der IT mit – als Web-Entwickler, Software Tester und seit 2023 als Frontend-Entwickler. TypeScript, JavaScript, HTML5, CSS3, Git und die Arbeit in agilen Teams gehören zu meinem täglichen Arbeitsalltag. Meine bevorzugte JavaScript-Bibliothek ist ReactJS, mit dem ich aktuell an FreeDesign® arbeite – einem hochskalierbaren Online-Design-Editor mit über 1 Million Nutzern in 22 europäischen Ländern.`
         : `I bring over 6 years of experience in IT — as a web developer, software tester and since 2023 as a frontend developer. TypeScript, JavaScript, HTML5, CSS3, Git and agile teamwork are part of my daily workflow. My main JavaScript library is ReactJS, which I currently use to develop FreeDesign® — a highly scalable online design editor with over 1 million users across 22 European countries.`
 
+    const p3 = isGerman
+        ? `Meine Ausbildung zum Fachinformatiker für Anwendungsentwicklung bei Unitedprint.com SE hat mir eine solide technische Grundlage gegeben. Besonders stolz bin ich darauf, dass ich als einziger von 300 Mitarbeitern nach der Schließung der Produktion vom Unternehmen gehalten wurde – ein Vertrauen, das ich seitdem täglich durch Einsatz und Qualität rechtfertige.`
+        : `My apprenticeship as a Fachinformatiker für Anwendungsentwicklung at Unitedprint.com SE gave me a strong technical foundation. I am particularly proud that I was the only employee retained out of 300 after the production shutdown — a trust I justify every day through dedication and quality of work.`
+
     const p4 = isGerman
         ? `Die Möglichkeit, bei ${form.companyName} mitzuwirken, reizt mich sehr. Ich bin überzeugt, dass ich gut ins Team passe und schnell einen wertvollen Beitrag leisten kann. Ich freue mich sehr auf ein persönliches Gespräch.`
         : `I am genuinely excited about the opportunity to contribute to ${form.companyName}. I am confident that I would be a great fit for the team and can make a valuable contribution quickly. I very much look forward to a personal conversation.`
 
-    const paragraphs = [p1, p2]
+    const p5 = isGerman
+        ? `Als jemand, der sich vom Druckhelfer zum Frontend-Entwickler hochgearbeitet hat, bringe ich nicht nur technisches Wissen, sondern auch Ausdauer, Lernbereitschaft und eine starke Arbeitsmoral mit.`
+        : `Having worked my way up from a print assistant to a frontend developer, I bring not only technical skills but also resilience, a strong work ethic and a genuine passion for continuous learning.`
+
+    const paragraphs = [p1, p2, p3, p4]
     if (techSentence.trim()) paragraphs.push(techSentence.trim())
-    paragraphs.push(p4)
+    paragraphs.push(p5)
 
     letterData.value = {
         companyName: form.companyName,
@@ -446,7 +457,7 @@ const generate = () => {
             : `Application for ${form.jobTitle}`,
         salutation: isGerman
             ? `Sehr geehrte/r ${form.contactPerson},`
-            : `Respected ${form.contactPerson},`,
+            : `Dear ${form.contactPerson},`,
         paragraphs,
         signoff: isGerman ? 'Mit freundlichen Grüßen' : 'Kind regards,',
     }
@@ -527,7 +538,6 @@ const downloadMergedPdf = async () => {
 
         const black = rgb(0.1, 0.1, 0.1)
         const gray = rgb(0.4, 0.4, 0.4)
-        const primary = rgb(0.4, 0.3, 0.9)
 
         // --- PAGE 1: Cover Letter ---
         const page1 = pdfDoc.addPage([595, 842]) // A4
@@ -587,7 +597,7 @@ const downloadMergedPdf = async () => {
         // Salutation
         const salutation = isGerman
             ? `Sehr geehrte/r ${form.contactPerson},`
-            : `Respected ${form.contactPerson},`
+            : `Dear ${form.contactPerson},`
         page1.drawText(salutation, {
             x: margin,
             y,
@@ -618,9 +628,27 @@ const downloadMergedPdf = async () => {
         const p2 = isGerman
             ? `Ich bringe mehr als 6 Jahre Erfahrung in der IT mit – als Web-Entwickler, Software Tester und seit 2023 als Frontend-Entwickler. TypeScript, JavaScript, HTML5, CSS3, Git und die Arbeit in agilen Teams gehören zu meinem täglichen Arbeitsalltag.Meine bevorzugte JavaScript-Bibliothek ist ReactJS, mit dem ich aktuell an FreeDesign® arbeite – einem hochskalierbaren Online-Design-Editor mit über 1 Million Nutzern in 22 europäischen Ländern.`
             : `I bring over 6 years of experience in IT — as a web developer, software tester and since 2023 as a frontend developer. TypeScript, JavaScript, HTML5, CSS3, Git and agile teamwork are part of my daily workflow. My main JavaScript library is ReactJS, which I currently use to develop FreeDesign® — a highly scalable online design editor with over 1 million users across 22 European countries.`
+
         y = drawWrappedText(
             page1,
             p2,
+            margin,
+            y,
+            contentWidth,
+            10,
+            font,
+            black,
+            16,
+        )
+        y -= 12
+
+        const p3 = isGerman
+            ? `Meine Ausbildung zum Fachinformatiker für Anwendungsentwicklung bei Unitedprint.com SE hat mir eine solide technische Grundlage gegeben. Besonders stolz bin ich darauf, dass ich als einziger von 300 Mitarbeitern nach der Schließung der Produktion vom Unternehmen gehalten wurde – ein Vertrauen, das ich seitdem täglich durch Einsatz und Qualität rechtfertige.`
+            : `My apprenticeship as a Fachinformatiker für Anwendungsentwicklung at Unitedprint.com SE gave me a strong technical foundation. I am particularly proud that I was the only employee retained out of 300 after the production shutdown — a trust I justify every day through dedication and quality of work.`
+
+        y = drawWrappedText(
+            page1,
+            p3,
             margin,
             y,
             contentWidth,
@@ -649,11 +677,29 @@ const downloadMergedPdf = async () => {
 
         // Paragraph 4 - closing
         const p4 = isGerman
-            ? `Die Möglichkeit, bei ${form.companyName} mitzuwirken, reizt mich sehr. Ich bin überzeugt, dass ich gut ins Team passe und schnell einen wertvollen Beitrag leisten kann. Ich freue mich sehr auf ein persönliches Gespräch.`
-            : `I am genuinely excited about the opportunity to contribute to ${form.companyName}. I am confident that I would be a great fit for the team and can make a valuable contribution quickly. I very much look forward to a personal conversation.`
+            ? `Als jemand, der sich vom Druckhelfer zum Frontend-Entwickler hochgearbeitet hat, bringe ich nicht nur technisches Wissen, sondern auch Ausdauer, Lernbereitschaft und eine starke Arbeitsmoral mit.`
+            : `Having worked my way up from a print assistant to a frontend developer, I bring not only technical skills but also resilience, a strong work ethic and a genuine passion for continuous learning.`
+
         y = drawWrappedText(
             page1,
             p4,
+            margin,
+            y,
+            contentWidth,
+            10,
+            font,
+            black,
+            16,
+        )
+        y -= 12
+
+        const p5 = isGerman
+            ? `Die Möglichkeit, bei ${form.companyName} mitzuwirken, reizt mich sehr. Ich bin überzeugt, dass ich gut ins Team passe und schnell einen  wertvollen Beitrag leisten kann. Ich freue mich sehr auf ein persönliches Gespräch.`
+            : ` I am genuinely excited about the opportunity to contribute to ${form.companyName}. I am confident that I would be a great fit for the team and can make a valuable contribution quickly. I very much look forward to a personal conversation.`
+
+        y = drawWrappedText(
+            page1,
+            p5,
             margin,
             y,
             contentWidth,
@@ -682,30 +728,6 @@ const downloadMergedPdf = async () => {
             size: 14,
             font: signatureFont,
             color: rgb(0.1, 0.2, 0.6),
-        })
-        y -= 25
-        page1.drawText('+49 176 5781 8593', {
-            x: margin,
-            y,
-            size: 10,
-            font,
-            color: gray,
-        })
-        y -= 16
-        page1.drawText('joga-singh@web.de', {
-            x: margin,
-            y,
-            size: 10,
-            font,
-            color: primary,
-        })
-        y -= 16
-        page1.drawText('01445 Radebeul', {
-            x: margin,
-            y,
-            size: 10,
-            font,
-            color: gray,
         })
 
         // --- PAGE 2 & 3: Existing CV PDF with dynamic date ---
@@ -775,6 +797,7 @@ const downloadMergedPdf = async () => {
         a.download = `${prefix}_Joga_Singh_Dayal_${company}.pdf`
         a.click()
         URL.revokeObjectURL(url)
+        await incrementCount()
     } catch (e) {
         console.error(e)
         error.value =
@@ -792,24 +815,24 @@ const reset = () => {
 </script>
 
 <style scoped>
-    .fade-enter-active,
-    .fade-leave-active {
-        transition: opacity 0.3s ease;
-    }
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
 
-    .fade-enter-from,
-    .fade-leave-to {
-        opacity: 0;
-    }
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
 
-    .slide-up-enter-active,
-    .slide-up-leave-active {
-        transition: all 0.3s ease;
-    }
+.slide-up-enter-active,
+.slide-up-leave-active {
+    transition: all 0.3s ease;
+}
 
-    .slide-up-enter-from,
-    .slide-up-leave-to {
-        opacity: 0;
-        transform: translateY(20px);
-    }
+.slide-up-enter-from,
+.slide-up-leave-to {
+    opacity: 0;
+    transform: translateY(20px);
+}
 </style>
