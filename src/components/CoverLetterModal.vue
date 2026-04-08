@@ -358,16 +358,21 @@ const validate = () => {
 const getTechSentence = () => {
     const techs = form.technologies.split(',').map((t) => t.trim())
     const hasVue = techs.some((t) => t.toLowerCase().includes('vue'))
+
     const hasPhp = techs.some(
-        (t) =>
-            t.toLowerCase().includes('php') ||
-            t.toLowerCase().includes('laravel'),
+        (tech) =>
+            tech.toLowerCase().includes('php') ||
+            tech.toLowerCase().includes('laravel'),
     )
     const otherTechs = techs.filter(
-        (t) =>
-            !t.toLowerCase().includes('vue') &&
-            !t.toLowerCase().includes('php') &&
-            !t.toLowerCase().includes('laravel'),
+        (tech) =>
+            !tech.toLowerCase().includes('vue') &&
+            !tech.toLowerCase().includes('php') &&
+            !tech.toLowerCase().includes('laravel') &&
+            !tech.toLowerCase().includes('react') &&
+            !tech.toLowerCase().includes('reactjs') &&
+            !tech.toLowerCase().includes('next.js') &&
+            !tech.toLowerCase().includes('nextjs'),
     )
 
     if (form.language === 'german') {
@@ -436,12 +441,12 @@ const generate = () => {
         : `My apprenticeship as a Fachinformatiker für Anwendungsentwicklung at Unitedprint.com SE gave me a strong technical foundation. I am particularly proud that I was the only employee retained out of 300 after the production shutdown — a trust I justify every day through dedication and quality of work.`
 
     const p4 = isGerman
-        ? `Die Möglichkeit, bei ${form.companyName} mitzuwirken, reizt mich sehr. Ich bin überzeugt, dass ich gut ins Team passe und schnell einen wertvollen Beitrag leisten kann. Ich freue mich sehr auf ein persönliches Gespräch.`
-        : `I am genuinely excited about the opportunity to contribute to ${form.companyName}. I am confident that I would be a great fit for the team and can make a valuable contribution quickly. I very much look forward to a personal conversation.`
-
-    const p5 = isGerman
         ? `Als jemand, der sich vom Druckhelfer zum Frontend-Entwickler hochgearbeitet hat, bringe ich nicht nur technisches Wissen, sondern auch Ausdauer, Lernbereitschaft und eine starke Arbeitsmoral mit.`
         : `Having worked my way up from a print assistant to a frontend developer, I bring not only technical skills but also resilience, a strong work ethic and a genuine passion for continuous learning.`
+
+    const p5 = isGerman
+        ? `Die Möglichkeit, bei ${form.companyName} mitzuwirken, reizt mich sehr. Ich bin überzeugt, dass ich gut ins Team passe und schnell einen wertvollen Beitrag leisten kann. Ich freue mich sehr auf ein persönliches Gespräch.`
+        : `I am genuinely excited about the opportunity to contribute to ${form.companyName}. I am confident that I would be a great fit for the team and can make a valuable contribution quickly. I very much look forward to a personal conversation.`
 
     const paragraphs = [p1, p2, p3, p4]
     if (techSentence.trim()) paragraphs.push(techSentence.trim())
@@ -659,23 +664,7 @@ const downloadMergedPdf = async () => {
         )
         y -= 12
 
-        // Paragraph 3 - tech
-        if (techSentence) {
-            y = drawWrappedText(
-                page1,
-                techSentence.trim(),
-                margin,
-                y,
-                contentWidth,
-                10,
-                font,
-                black,
-                16,
-            )
-            y -= 12
-        }
-
-        // Paragraph 4 - closing
+        // Paragraph - closing
         const p4 = isGerman
             ? `Als jemand, der sich vom Druckhelfer zum Frontend-Entwickler hochgearbeitet hat, bringe ich nicht nur technisches Wissen, sondern auch Ausdauer, Lernbereitschaft und eine starke Arbeitsmoral mit.`
             : `Having worked my way up from a print assistant to a frontend developer, I bring not only technical skills but also resilience, a strong work ethic and a genuine passion for continuous learning.`
@@ -692,6 +681,22 @@ const downloadMergedPdf = async () => {
             16,
         )
         y -= 12
+
+        // Paragraph - tech
+        if (techSentence) {
+            y = drawWrappedText(
+                page1,
+                techSentence.trim(),
+                margin,
+                y,
+                contentWidth,
+                10,
+                font,
+                black,
+                16,
+            )
+            y -= 12
+        }
 
         const p5 = isGerman
             ? `Die Möglichkeit, bei ${form.companyName} mitzuwirken, reizt mich sehr. Ich bin überzeugt, dass ich gut ins Team passe und schnell einen  wertvollen Beitrag leisten kann. Ich freue mich sehr auf ein persönliches Gespräch.`
