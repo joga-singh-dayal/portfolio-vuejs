@@ -448,8 +448,9 @@ const generate = () => {
         ? `Die Möglichkeit, bei ${form.companyName} mitzuwirken, reizt mich sehr. Ich bin überzeugt, dass ich gut ins Team passe und schnell einen wertvollen Beitrag leisten kann. Ich freue mich sehr auf ein persönliches Gespräch.`
         : `I am genuinely excited about the opportunity to contribute to ${form.companyName}. I am confident that I would be a great fit for the team and can make a valuable contribution quickly. I very much look forward to a personal conversation.`
 
-    const paragraphs = [p1, p2, p3, p4]
+    const paragraphs = [p1, p2, p3]
     if (techSentence.trim()) paragraphs.push(techSentence.trim())
+    paragraphs.push(p4)
     paragraphs.push(p5)
 
     letterData.value = {
@@ -664,6 +665,22 @@ const downloadMergedPdf = async () => {
         )
         y -= 12
 
+        // Paragraph - tech
+        if (techSentence) {
+            y = drawWrappedText(
+                page1,
+                techSentence.trim(),
+                margin,
+                y,
+                contentWidth,
+                10,
+                font,
+                black,
+                16,
+            )
+            y -= 12
+        }
+
         // Paragraph - closing
         const p4 = isGerman
             ? `Als jemand, der sich vom Druckhelfer zum Frontend-Entwickler hochgearbeitet hat, bringe ich nicht nur technisches Wissen, sondern auch Ausdauer, Lernbereitschaft und eine starke Arbeitsmoral mit.`
@@ -681,22 +698,6 @@ const downloadMergedPdf = async () => {
             16,
         )
         y -= 12
-
-        // Paragraph - tech
-        if (techSentence) {
-            y = drawWrappedText(
-                page1,
-                techSentence.trim(),
-                margin,
-                y,
-                contentWidth,
-                10,
-                font,
-                black,
-                16,
-            )
-            y -= 12
-        }
 
         const p5 = isGerman
             ? `Die Möglichkeit, bei ${form.companyName} mitzuwirken, reizt mich sehr. Ich bin überzeugt, dass ich gut ins Team passe und schnell einen  wertvollen Beitrag leisten kann. Ich freue mich sehr auf ein persönliches Gespräch.`
