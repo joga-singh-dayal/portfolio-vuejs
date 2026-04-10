@@ -13,13 +13,13 @@
                 &lt; /&gt;
             </RouterLink>
 
-            <!-- Desktop links -->
             <div class="hidden md:flex items-center gap-8">
                 <button
                     v-for="link in navLinks"
                     :key="link.label"
                     class="text-sm font-medium transition-colors"
                     style="color: hsl(var(--muted-foreground))"
+                    data-testid="`nav-link-${link.lable.toLowerCase()}`"
                     @click="handleNav(link.href)"
                 >
                     {{ link.label }}
@@ -30,6 +30,7 @@
                         backgroundImage: 'var(--gradient-primary)',
                         boxShadow: 'var(--shadow-glow)',
                     }"
+                    data-testid="cv-download-btn"
                     @click="showModal = true"
                 >
                     <Download :size="14" />
@@ -40,6 +41,7 @@
             <!-- Mobile toggle -->
             <button
                 class="md:hidden text-foreground"
+                data-testid="menu-toggle"
                 @click="menuOpen = !menuOpen"
             >
                 <X v-if="menuOpen" :size="24" />
@@ -58,6 +60,7 @@
                         v-for="link in navLinks"
                         :key="link.label"
                         class="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors text-left py-2"
+                        data-textid="mobile-menu"
                         @click="handleNav(link.href)"
                     >
                         {{ link.label }}

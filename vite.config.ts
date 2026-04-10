@@ -1,6 +1,5 @@
 import { defineConfig, type UserConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-// Import the Vitest config type specifically
 import type { InlineConfig } from 'vitest/node'
 
 interface VitestConfigExport extends UserConfig {
@@ -12,5 +11,6 @@ export default defineConfig({
     test: {
         globals: true,
         environment: 'jsdom',
+        setupFiles: ['./tests/setup.ts'],
     },
-} as VitestConfigExport) // Force TypeScript to accept the 'test' property
+} as VitestConfigExport)

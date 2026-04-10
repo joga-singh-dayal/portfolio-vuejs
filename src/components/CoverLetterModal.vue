@@ -536,7 +536,7 @@ const downloadMergedPdf = async () => {
         const font = await pdfDoc.embedFont(StandardFonts.Helvetica)
         const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold)
 
-        // Embed signature font
+        // Embedded signature font
         const signatureFontBytes = await fetch(
             '/fonts/GreatVibes-Regular.ttf',
         ).then((res) => res.arrayBuffer())
@@ -577,7 +577,6 @@ const downloadMergedPdf = async () => {
         })
         y -= 40
 
-        // Date right aligned
         page1.drawText(`Radebeul, ${today}`, {
             x: 595 - margin - font.widthOfTextAtSize(`Radebeul, ${today}`, 10),
             y,
@@ -587,7 +586,6 @@ const downloadMergedPdf = async () => {
         })
         y -= 40
 
-        // Subject line
         const subject = isGerman
             ? `Bewerbung als ${form.jobTitle}`
             : `Application for ${form.jobTitle}`
@@ -742,10 +740,10 @@ const downloadMergedPdf = async () => {
         const cvPdf = await PDFDocument.load(cvBytes)
         const cvPages = await pdfDoc.copyPages(cvPdf, cvPdf.getPageIndices())
 
-        // Add CV pages
+        // Added CV pages
         cvPages.forEach((p) => pdfDoc.addPage(p))
 
-        // Add dynamic date to last page of CV (page 3)
+        // Added dynamic date to last page of CV
         const lastPage = pdfDoc.getPage(pdfDoc.getPageCount() - 1)
 
         const cvDate = new Date().toLocaleDateString('de-DE', {
@@ -754,7 +752,7 @@ const downloadMergedPdf = async () => {
             year: 'numeric',
         })
 
-        // White rectangle to cover any leftover space
+        // White rectangle to cover any leftover space, if exists
         lastPage.drawRectangle({
             x: 65,
             y: 210,
@@ -763,7 +761,7 @@ const downloadMergedPdf = async () => {
             color: rgb(1, 1, 1),
         })
 
-        // Draw dynamic date
+        // Dynamic date
         lastPage.drawText('Radebeul, ', {
             x: 65,
             y: 215,
@@ -772,7 +770,7 @@ const downloadMergedPdf = async () => {
             color: black,
         })
 
-        // Date in regular font right after "Radebeul, "
+        // Date
         const radebuelWidth = fontBold.widthOfTextAtSize('Radebeul, ', 10)
         lastPage.drawText(cvDate, {
             x: 65 + radebuelWidth,
@@ -782,7 +780,6 @@ const downloadMergedPdf = async () => {
             color: black,
         })
 
-        // Signature block below
         lastPage.drawText('Joga Singh Dayal', {
             x: 65,
             y: 195,

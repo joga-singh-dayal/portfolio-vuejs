@@ -1,6 +1,7 @@
 <template>
     <section
         id="hero"
+        data-testid="hero-section"
         class="relative min-h-screen flex items-center overflow-hidden"
         :style="{ background: 'var(--gradient-hero)' }"
     >
@@ -90,6 +91,7 @@
                                 backgroundImage: 'var(--gradient-primary)',
                                 boxShadow: 'var(--shadow-glow)',
                             }"
+                            data-testid="hero-cta-skills"
                             @click="scrollToSkills"
                         >
                             Explore Skills
@@ -118,7 +120,10 @@
                         }"
                         class="flex gap-8 mt-10"
                     >
-                        <div v-for="stat in stats" :key="stat.label">
+                        <div 
+                            v-for="stat in stats" 
+                            :key="stat.label" 
+                            :data-testid="`stat-${stat.label.replace(/\s+/g, '-').toLowerCase()}`">
                             <p
                                 class="font-heading text-2xl font-bold gradient-text"
                             >
