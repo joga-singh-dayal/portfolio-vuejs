@@ -232,27 +232,28 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowDown, MapPin } from 'lucide-vue-next'
-import profileImg from '../assets/profile.webp'
+    import { ArrowDown, MapPin } from 'lucide-vue-next'
+    import profileImg from '../assets/profile.webp'
 
-const stats = [
-    { value: '6+', label: 'Years Exp.' },
-    { value: '20+', label: 'Projects' },
-    { value: '7+', label: 'Technologies' },
-]
+    const stats = [
+        { value: '6+', label: 'Years Exp.' },
+        { value: '20+', label: 'Projects' },
+        { value: '7+', label: 'Technologies' },
+    ]
+    
+    // TODO: pull particle count and animation timing out of getParticleStyle into config — magic numbers
+    const getParticleStyle = (i: number) => ({
+        left: `${(i * 37) % 100}%`,
+        top: `${(i * 53) % 100}%`,
+        animationDelay: `${(i * 0.7) % 5}s`,
+        animationDuration: `${4 + (i % 4)}s`,
+        width: `${2 + (i % 3)}px`,
+        height: `${2 + (i % 3)}px`,
+    })
 
-const getParticleStyle = (i: number) => ({
-    left: `${(i * 37) % 100}%`,
-    top: `${(i * 53) % 100}%`,
-    animationDelay: `${(i * 0.7) % 5}s`,
-    animationDuration: `${4 + (i % 4)}s`,
-    width: `${2 + (i % 3)}px`,
-    height: `${2 + (i % 3)}px`,
-})
-
-const scrollToSkills = () => {
-    document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' })
-}
+    const scrollToSkills = () => {
+        document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' })
+    }
 </script>
 
 <style scoped>
