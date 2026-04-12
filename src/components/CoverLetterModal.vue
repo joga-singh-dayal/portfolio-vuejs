@@ -711,7 +711,7 @@ const downloadMergedPdf = async () => {
 
         const p5 = isGerman
             ? `Die Möglichkeit, bei ${form.companyName} mitzuwirken, reizt mich sehr. Ich bin überzeugt, dass ich gut ins Team passe und schnell einen  wertvollen Beitrag leisten kann. Ich freue mich sehr auf ein persönliches Gespräch.`
-            : ` I am genuinely excited about the opportunity to contribute to ${form.companyName}. I am confident that I would be a great fit for the team and can make a valuable contribution quickly. I very much look forward to a personal conversation.`
+            : `I am genuinely excited about the opportunity to contribute to ${form.companyName}. I am confident that I would be a great fit for the team and can make a valuable contribution quickly. I very much look forward to a personal conversation.`
 
         y = drawWrappedText(
             page1,
