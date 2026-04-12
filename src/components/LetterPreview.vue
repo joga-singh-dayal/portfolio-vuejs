@@ -2,7 +2,7 @@
     <div class="space-y-4 text-sm" style="color: hsl(var(--foreground))">
 
         <div style="line-height: 1.6">
-            <p style="font-weight: 600">{{ letter.companyName }}</p>
+            <p style="font-weight: 600; color: rgb(10%, 20%, 60%); ">{{ letter.companyName }}</p>
             <p style="color: hsl(var(--muted-foreground))">
                 {{ letter.department }}
             </p>
@@ -17,9 +17,9 @@
         </p>
 
 
-        <p style="font-weight: 600">{{ letter.subject }}</p>
+        <p style="font-weight: 600; color: rgb(10%, 20%, 60%);">{{ letter.subject }}</p>
         <p>{{ letter.salutation }}</p>
-        <p v-for="(paragraph, i) in letter.paragraphs" :key="i">
+        <p class="text-justify" v-for="(paragraph, i) in letter.paragraphs" :key="i">
             {{ paragraph }}
         </p>
         <p>{{ letter.signoff }}</p>

@@ -481,38 +481,45 @@ const drawWrappedText = (
     font: any,
     color: any,
     lineHeight: number,
+    align: 'left' | 'justify' = 'left',
 ): number => {
     const words = text.split(' ')
-    let line = ''
-    let currentY = y
+    const lines: string[][] = []
+    let currentWords: string[] = []
 
     for (const word of words) {
-        const testLine = line ? `${line} ${word}` : word
+        const testLine = currentWords.length ? `${currentWords.join(' ')} ${word}` : word
         const width = font.widthOfTextAtSize(testLine, fontSize)
-        if (width > maxWidth && line) {
-            page.drawText(line, {
-                x,
-                y: currentY,
-                size: fontSize,
-                font,
-                color,
-            })
-            currentY -= lineHeight
-            line = word
+        if (width > maxWidth && currentWords.length) {
+            lines.push(currentWords)
+            currentWords = [word]
         } else {
-            line = testLine
+            currentWords.push(word)
         }
     }
-    if (line) {
-        page.drawText(line, {
-            x,
-            y: currentY,
-            size: fontSize,
-            font,
-            color,
-        })
+    if (currentWords.length) lines.push(currentWords)
+
+    let currentY = y
+
+    for (let i = 0; i < lines.length; i++) {
+        const lineWords = lines[i]
+        const isLastLine = i === lines.length - 1
+
+        if (align === 'justify' && !isLastLine && lineWords.length > 1) {
+            const textWidth = lineWords.reduce((sum, w) => sum + font.widthOfTextAtSize(w, fontSize), 0)
+            const extraSpace = (maxWidth - textWidth) / (lineWords.length - 1)
+            let drawX = x
+            for (const word of lineWords) {
+                page.drawText(word, { x: drawX, y: currentY, size: fontSize, font, color })
+                drawX += font.widthOfTextAtSize(word, fontSize) + extraSpace
+            }
+        } else {
+            page.drawText(lineWords.join(' '), { x, y: currentY, size: fontSize, font, color })
+        }
+
         currentY -= lineHeight
     }
+
     return currentY
 }
 
@@ -557,7 +564,7 @@ const downloadMergedPdf = async () => {
             y,
             size: 11,
             font: fontBold,
-            color: black,
+            color: rgb(0.1, 0.2, 0.6),
         })
         y -= 18
         page1.drawText(isGerman ? 'Personalabteilung' : 'HR Department', {
@@ -594,7 +601,7 @@ const downloadMergedPdf = async () => {
             y,
             size: 12,
             font: fontBold,
-            color: black,
+            color: rgb(0.1, 0.2, 0.6),
         })
         y -= 35
 
@@ -625,6 +632,7 @@ const downloadMergedPdf = async () => {
             font,
             black,
             16,
+            'justify'
         )
         y -= 12
 
@@ -643,6 +651,7 @@ const downloadMergedPdf = async () => {
             font,
             black,
             16,
+            'justify'
         )
         y -= 12
 
@@ -660,6 +669,7 @@ const downloadMergedPdf = async () => {
             font,
             black,
             16,
+            'justify'
         )
         y -= 12
 
@@ -675,6 +685,7 @@ const downloadMergedPdf = async () => {
                 font,
                 black,
                 16,
+                'justify'
             )
             y -= 12
         }
@@ -694,6 +705,7 @@ const downloadMergedPdf = async () => {
             font,
             black,
             16,
+            'justify'
         )
         y -= 12
 
@@ -711,6 +723,7 @@ const downloadMergedPdf = async () => {
             font,
             black,
             16,
+            'justify'
         )
         y -= 30
 
