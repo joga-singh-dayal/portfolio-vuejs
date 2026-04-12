@@ -19,7 +19,7 @@
 
         <p style="font-weight: 600; color: rgb(10%, 20%, 60%);">{{ letter.subject }}</p>
         <p>{{ letter.salutation }}</p>
-        <p class="text-justify" v-for="(paragraph, i) in letter.paragraphs" :key="i">
+        <p v-for="(paragraph, i) in letter.paragraphs" :key="i" class="text-justify">
             {{ paragraph }}
         </p>
         <p>{{ letter.signoff }}</p>
